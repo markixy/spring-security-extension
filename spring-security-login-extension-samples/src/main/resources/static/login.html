@@ -1,0 +1,104 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>登录页</title>
+</head>
+<body>
+<div>
+    <div id="tips" style="background-color:#f8d7da"></div>
+    <div>
+        登录方式：
+        <input type="radio" name="loginType" value="usernameLogin">用户名</input>
+        <input type="radio" name="loginType" value="noLogin">工号</input>
+        <input type="radio" name="loginType" value="phoneLogin">手机号</input>
+        <input type="radio" name="loginType" value="emailLogin">邮箱</input>
+    </div>
+    <br/>
+    <form id="usernameLogin" method="post" action="/multi-login" style="display: none;">
+        用户名:<input type="text" name="username"/><br/>
+        密码:<input type="password" name="password"/><br/>
+        记住我:<input type="checkbox" name="remember-me"/>
+        <br/>
+        <button type="submit">Login</button>
+    </form>
+
+    <form id="noLogin" method="post" action="/multi-login" style="display: none;">
+        工号:<input type="text" name="no"/><br/>
+        密码:<input type="password" name="password"/><br/>
+        记住我:<input type="checkbox" name="remember-me"/>
+        <br/>
+        <button type="submit">Login</button>
+    </form>
+
+    <form id="phoneLogin" method="post" action="/multi-login" style="display: none;">
+        手机号：<input id="phone" name="phone" type="text" required/>
+        <br/>验证码：<input name="captcha" type="text" required/>
+        <button type="button" onclick="sendPhoneCode()">发送验证码</button>
+        <br/>记住我：<input type="checkbox" name="remember-me"/>
+        <br/>
+        <button type="submit">Login</button>
+    </form>
+
+    <form id="emailLogin" method="post" action="/multi-login" style="display: none;">
+        邮箱：<input id="email" name="email" type="text" required/>
+        <br/>验证码：<input name="captcha" type="text" required/>
+        <button type="button" onclick="sendEmailCode()">发送验证码</button>
+        <br/>记住我：<input type="checkbox" name="remember-me"/>
+        <br/>
+        <button type="submit">Login</button>
+    </form>
+</div>
+</body>
+</html>
+
+<script type="text/javascript" src="./js/jquery-3.5.0.min.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+    if(window.location.search.endsWith("?logout")){
+        tips("退出成功")
+    }
+    if(window.location.search.endsWith("?error")){
+        tips("认证不通过")
+    }
+
+    $('input[type=radio][name=loginType]').change(function() {
+        $('form').hide();
+        $('#' + this.value).show();
+    });
+
+    $('input[type=radio][name=loginType]')[0].click();
+
+};
+function tips(msg){
+    $("#tips").html(msg).show().delay(3000).hide(300);
+}
+
+function sendPhoneCode(){
+    let phone = $("#phone").val();
+    $.ajax({
+        method: "POST",
+        url: "/phone/code",
+        data: {"phone": phone},
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        success: function(res){
+            console.log(res);
+        }
+    });
+}
+function sendEmailCode(){
+    let email = $("#email").val();
+    $.ajax({
+        method: "POST",
+        url: "/email/code",
+        data: {"email": email},
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        success: function(res){
+            console.log(res);
+        }
+    });
+}
+
+
+
+
+</script>

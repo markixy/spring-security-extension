@@ -1,0 +1,30 @@
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: 30m # 默认30分钟
+      cookie:
+        max-age: -1 # 默认窗口关闭后cookie失效
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:~/h2/spring-security-login-extension-samples
+    username: root
+    password: root
+    data:
+      - classpath:sql/data.sql # 初始数据
+  jpa:
+    hibernate:
+      ddl-auto: update # 根据实体自动建表
+
+
+logging:
+  level:
+    root: info
+
+    org.springframework.security.web: debug
+    org.springframework.security.web.FilterChainProxy: debug #过滤器执行顺序
+    org.springframework.security.web.access.expression.ExpressionBasedFilterInvocationSecurityMetadataSource: debug #url 权限配置
+    org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource: info #方法 权限配置
+    org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration: debug

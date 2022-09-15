@@ -9,5 +9,10 @@
     <packaging>pom</packaging>
     <description>Spring Security 扩展组件</description>
 
+    <modules>
+        <module>spring-security-login-extension</module>
+        <module>spring-security-login-extension-samples</module>
+    </modules>
+
 
 </project>
